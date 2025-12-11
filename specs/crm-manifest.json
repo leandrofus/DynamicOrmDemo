@@ -1,0 +1,17 @@
+{
+  "module": { "name": "CRM", "version": "0.1.0", "author": "DynamicOrmDemo" },
+  "models": [
+    {
+      "name": "CRM",
+      "fields": [
+        { "name": "id", "type": "number", "autoIncrement": true },
+        { "name": "title", "type": "string", "required": true },
+        { "name": "slug", "type": "string", "required": true },
+        { "name": "body", "type": "string" },
+        { "name": "coverImadgeUrl", "type": "string" },
+        { "name": "createdAt", "type": "string" }
+      ]
+    }
+  ],
+  "impacts": [{ "action": "createModelTable", "targetModel": "CRM" }]
+}

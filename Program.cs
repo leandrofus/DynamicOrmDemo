@@ -65,7 +65,7 @@ void readDirectory(string path)
       var manifest = ManifestLoader.LoadFromJson(manifestJson);
       mm.Install(new[] { manifest }, adapter);
       ctx.RegisterManifest(manifest);
-      Console.WriteLine($"Installed and registered manifest: {manifest.Module?.Name}");
+      Console.WriteLine($"Installed and registered manifest from: {abs}");
     }
     catch (Exception ex)
     {
