@@ -1,0 +1,23 @@
+@{
+  ViewData["Title"] = "Create post";
+}
+<h1>Create Post</h1>
+<form method="post" enctype="multipart/form-data" action="/Admin/CreatePost">
+  <div>
+    <label>Title</label>
+    <input name="title" />
+  </div>
+  <div>
+    <label>Slug</label>
+    <input name="slug" />
+  </div>
+  <div>
+    <label>Body</label>
+    <textarea name="body" rows="8" cols="80"></textarea>
+  </div>
+  <div>
+    <label>Cover Image</label>
+    <input type="file" name="coverImage" />
+  </div>
+  <button type="submit">Create</button>
+</form>

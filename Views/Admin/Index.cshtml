@@ -1,0 +1,25 @@
+@model IEnumerable<DynamicOrmLib.DynamicRecord>
+@{
+  ViewData["Title"] = "Admin - Posts";
+}
+<h1>Admin - Posts</h1>
+<p><a href="/Admin/Create">Create new post</a> | <a href="/Admin/Logout">Logout</a></p>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Slug</th>
+    <th>Actions</th>
+  </tr>
+  @foreach (var p in Model)
+  {
+    <tr>
+      <td>@p.Data["title"]</td>
+      <td>@p.Data["slug"]</td>
+      <td>
+        <a href="/Admin/Edit/@p.Id">Edit</a> |
+        <form method="post" action="/Admin/Delete" style="display:inline;"><input type="hidden" name="id"
+            value="@p.Id" /><button type="submit">Delete</button></form>
+      </td>
+    </tr>
+  }
+</table>

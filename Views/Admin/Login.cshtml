@@ -1,0 +1,16 @@
+@{
+  ViewData["Title"] = "Login";
+}
+<h1>Admin Login</h1>
+<form method="post" action="/Admin/LoginPost">
+  <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+  <div>
+    <label>Password:</label>
+    <input type="password" name="password" />
+  </div>
+  <button type="submit">Log in</button>
+</form>
+@if (!ViewData.ModelState.IsValid)
+{
+  <div style="color:red;">Invalid login</div>
+}

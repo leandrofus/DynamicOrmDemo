@@ -1,0 +1,5 @@
+bin/
+obj/
+demo.db
+core-DynamicOrmDemo
+wwwroot/uploads/

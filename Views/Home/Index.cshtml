@@ -1,0 +1,19 @@
+@model IEnumerable<DynamicOrmLib.DynamicRecord>
+@{
+  ViewData["Title"] = "Home";
+}
+<h1>Blog posts</h1>
+<ul>
+  @foreach (var p in Model)
+  {
+    <li>
+      <h2><a href="/Home/Details/@p.Id">@p.Data["title"]</a></h2>
+      @if (p.Data.ContainsKey("coverImageUrl"))
+      {
+        <img src="@p.Data["coverImageUrl"]" style="max-width:200px;" />
+      }
+      <p>@((p.Data.ContainsKey("body") ? p.Data["body"]?.ToString()?.Substring(0, Math.Min(200,
+              p.Data["body"]?.ToString()?.Length ?? 0)) : ""))</p>
+    </li>
+  }
+</ul>

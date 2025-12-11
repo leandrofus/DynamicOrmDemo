@@ -1,0 +1,14 @@
+@model DynamicOrmLib.DynamicRecord
+@{
+  ViewData["Title"] = "Details";
+}
+<article>
+  <h1>@Model.Data["title"]</h1>
+  @if (Model.Data.ContainsKey("coverImageUrl"))
+  {
+    <img src="@Model.Data["coverImageUrl"]" style="max-width:400px;" />
+  }
+  <div>
+    @Html.Raw(Model.Data["body"]?.ToString())
+  </div>
+</article>

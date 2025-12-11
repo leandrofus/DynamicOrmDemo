@@ -1,0 +1,25 @@
+@model DynamicOrmLib.DynamicRecord
+@{
+  ViewData["Title"] = "Edit post";
+}
+<h1>Edit Post</h1>
+<form method="post" enctype="multipart/form-data" action="/Admin/EditPost">
+  <input type="hidden" name="id" value="@Model.Id" />
+  <div>
+    <label>Title</label>
+    <input name="title" value="@Model.Data["title"]" />
+  </div>
+  <div>
+    <label>Slug</label>
+    <input name="slug" value="@Model.Data["slug"]" />
+  </div>
+  <div>
+    <label>Body</label>
+    <textarea name="body" rows="8" cols="80">@Model.Data["body"]</textarea>
+  </div>
+  <div>
+    <label>Cover Image</label>
+    <input type="file" name="coverImage" />
+  </div>
+  <button type="submit">Save</button>
+</form>

@@ -1,0 +1,17 @@
+{
+  "module": { "name": "blog", "version": "0.1.0", "author": "DynamicOrmDemo" },
+  "models": [
+    {
+      "name": "post",
+      "fields": [
+        { "name": "id", "type": "number", "autoIncrement": true },
+        { "name": "title", "type": "string", "required": true },
+        { "name": "slug", "type": "string", "required": true },
+        { "name": "body", "type": "string" },
+        { "name": "coverImageUrl", "type": "string" },
+        { "name": "createdAt", "type": "string" }
+      ]
+    }
+  ],
+  "impacts": [{ "action": "createModelTable", "targetModel": "post" }]
+}
