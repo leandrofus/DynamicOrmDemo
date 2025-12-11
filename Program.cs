@@ -1,10 +1,7 @@
 using System.Text.Json.Nodes;
-using System.Linq;
 using DynamicOrmLib;
 using DynamicOrmLib.Adapters.Sqlite;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.IO;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 // Bind server to fixed port for integration testing
@@ -43,32 +40,42 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 // Load manifest (prefer demo blog manifest)
-var candidatePaths = new[] {
-  "specs/blog-manifest.json",
-  "specs/blog-manifest.json",
-  "../DynamicOrmLib/specs/crm-manifest.json",
-  "../DynamicOrmLib/specs/crm-manifest.json",
-  "DynamicOrmLib/specs/crm-manifest.json"
-};
-string? manifestPath = null;
-foreach (var p in candidatePaths)
-{
-  var abs = Path.GetFullPath(p);
-  if (File.Exists(abs)) { manifestPath = abs; break; }
-}
-if (manifestPath == null) throw new FileNotFoundException("Manifest file not found in expected locations");
-var manifestJson = File.ReadAllText(manifestPath);
-var manifest = ManifestLoader.LoadFromJson(manifestJson);
-
-// Install manifest into adapter and register with context
 var mm = app.Services.GetRequiredService<ModuleManager>();
-mm.Install(new[] { manifest }, adapter);
+// DynamicContext is registered as a singleton earlier
+var ctx = app.Services.GetRequiredService<DynamicContext>();
 
-var ctx = app.Services.CreateScope().ServiceProvider.GetRequiredService<DynamicContext>();
-ctx.RegisterManifest(manifest);
+void readDirectory(string path)
+{
+  var dir = new DirectoryInfo(path);
+  if (!dir.Exists)
+  {
+    Console.WriteLine($"Manifest directory does not exist: {path}");
+    return;
+  }
+  // Find all manifest files ending with -manifest.json and register them
+  foreach (var file in dir.EnumerateFiles("*-manifest.json"))
+  {
+    try
+    {
+      var abs = Path.GetFullPath(file.FullName);
+      Console.WriteLine("Found manifest file: " + abs);
+      if (!File.Exists(abs)) { Console.WriteLine("File disappeared: " + abs); continue; }
+      var manifestJson = File.ReadAllText(abs);
+      var manifest = ManifestLoader.LoadFromJson(manifestJson);
+      mm.Install(new[] { manifest }, adapter);
+      ctx.RegisterManifest(manifest);
+      Console.WriteLine($"Installed and registered manifest: {manifest.Module?.Name}");
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to load manifest {file.FullName}: {ex.Message}");
+    }
+  }
+}
 
+string manifestRoot = Path.GetFullPath(AppContext.BaseDirectory + "/specs/");
+readDirectory(manifestRoot);
 // Seed a sample post if none exist
 try
 {
